@@ -3,12 +3,12 @@ import db from './app/models/index.js';
 import keyConstants from './app/constants/keyConstants.js';
 import moment from 'moment-timezone';
 import bcrypt from 'bcryptjs';
-import {v4 as generateUuid} from 'uuid';
+import { v4 as generateUuid } from 'uuid';
 
 try {
   db.sequelize.authenticate();
   console.log('Connection has been established successfully.');
-  db.sequelize.sync({force: true }).then(async () => {
+  db.sequelize.sync({ force: true }).then(async () => {
 
     const user = {
       name: 'badin',
@@ -35,8 +35,8 @@ try {
       price: 10.00,
       qty: 100,
       paymentMethods: [
-        {name: 'master_card', discount: 10, discountType: 'percent'},
-        {name: 'visa_card', discount: 5, discountType: 'percent'},
+        { name: 'master_card', discount: 'percent', discountAmount: 10 },
+        { name: 'visa_card', discount: 'percent', discountAmount: 5 },
       ],
       status: 1,
       expiredAt: new Date(Date.now() + 365 * keyConstants.SESSION_DURATION) // 1year

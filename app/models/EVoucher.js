@@ -1,7 +1,7 @@
 import moment from "moment";
 import errorConstants from "../constants/errorConstants.js";
 import db from './index.js';
-import {v4 as generateUuid} from 'uuid'
+import { v4 as generateUuid } from 'uuid'
 
 const EVoucher = (sequelize, Sequelize) => {
   return sequelize.define('eVoucher', {
@@ -22,10 +22,10 @@ const EVoucher = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     image: { type: Sequelize.STRING },
-    price: {type: Sequelize.FLOAT(11, 2), allowNull: false},
+    price: { type: Sequelize.FLOAT(11, 2), allowNull: false },
     paymentMethods: { type: Sequelize.JSON, defaultValue: [] }, // [{name, discount, discountType: ['value', 'percent']}]
-    status: {type:Sequelize.BOOLEAN, defaultValue: false}, // status === true -> active 
-    expiredAt: { type: Sequelize.DATE, allowNull: false }, 
+    status: { type: Sequelize.BOOLEAN, defaultValue: false }, // status === true -> active 
+    expiredAt: { type: Sequelize.DATE, allowNull: false },
     createdAt: { type: Sequelize.DATE, defaultValue: new Date() },
     updatedAt: { type: Sequelize.DATE, defaultValue: new Date() },
   })
@@ -33,7 +33,7 @@ const EVoucher = (sequelize, Sequelize) => {
 
 export const list = async (req, res) => {
   await db.eVoucher.findAll().then((eVouchers) => {
-    if(eVouchers) res.json({status: 200, data: eVouchers || []})
+    if (eVouchers) res.json({ status: 200, data: eVouchers || [] })
   })
 }
 
@@ -41,9 +41,9 @@ export const create = async (req, res) => {
   const {
     title, desc, image, price,
     qty, paymentMethods, expiredAt
-  } = {...req.body}
+  } = { ...req.body }
 
-  if(!title || !price || !qty || !expiredAt  ) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+  if (!title || !price || !qty || !expiredAt) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
 
   await db.eVoucher.create({
     id: generateUuid(),
@@ -63,66 +63,84 @@ export const create = async (req, res) => {
       message: "Successful create new e-Voucher"
     })
   }).catch((error) => {
-    console.log('EVoucher > create ',error)
+    console.log('EVoucher > create ', error)
     res.json({
       status: 500,
       message: errorConstants.INTERNAL_SERVER_ERROR
     })
   })
+}
+
+export const detail = async (req, res) => {
+  const { id } = { ...req.body }
+  if (!id) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+  await db.eVoucher.findByPk(id)
+    .then((item) => {
+      if (!item) res.json({ status: 404, message: errorConstants.NOT_FOUND })
+
+      res.json({ status: 200, data: item })
+    })
+    .catch((error) => {
+      console.log('EVoucher > detail', error.message)
+      res.json({
+        status: 500,
+        message: errorConstants.INTERNAL_SERVER_ERROR
+      })
+    })
 }
 
 export const update = async (req, res) => {
   const {
     id, title, desc, image, price,
     qty, paymentMethods, expiredAt
-  } = {...req.body}
+  } = { ...req.body }
 
-  if(!id, !title || !price || !qty || !expiredAt  ) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+  if (!id, !title || !price || !qty || !expiredAt) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
 
   await db.eVoucher.findByPk(id)
-  .then((item) => {
-    if(!item) res.json({status: 404, message: errorConstants.NOT_FOUND})
-    const data = {
-      title,
-      desc,
-      image,
-      price,
-      qty,
-      paymentMethods,
-      expiredAt,
-      updatedAt: new Date()
-    }
-    item.update(data)
-    res.json({status: 200, data, message: "Successful e-voucher update"})
-  }).catch((error) => {
-    console.log('EVoucher > update', error.message)
-    res.json({
-      status: 500,
-      message: errorConstants.INTERNAL_SERVER_ERROR
+    .then((item) => {
+      if (!item) res.json({ status: 404, message: errorConstants.NOT_FOUND })
+      const data = {
+        title,
+        desc,
+        image,
+        price,
+        qty,
+        paymentMethods,
+        expiredAt,
+        updatedAt: new Date()
+      }
+      item.update(data)
+      res.json({ status: 200, data, message: "Successful e-voucher update" })
+    }).catch((error) => {
+      console.log('EVoucher > update', error.message)
+      res.json({
+        status: 500,
+        message: errorConstants.INTERNAL_SERVER_ERROR
+      })
     })
-  })
 }
 
 export const updateStatus = async (req, res) => {
-  const {id, status} = {...req.body}
+  let { id, status } = { ...req.body }
 
-  if(!id, !status) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+  if (!id || typeof status !== 'boolean') res.json({ status: 400, message: errorConstants.BAD_REQUEST })
 
   await db.eVoucher.findByPk(id)
-  .then((item) => {
-    if(!item) res.json({status: 404, message: errorConstants.NOT_FOUND})
+    .then((item) => {
+      if (!item) res.json({ status: 404, message: errorConstants.NOT_FOUND })
 
-    item.update({status, updatedAt: new Date()})
-    item.status = status
+      item.update({ status, updatedAt: new Date() })
+      item.status = status
 
-    res.json({status: 200, data: item, message: "Successful status update"})
-  }).catch((error) => {
-    console.log('EVoucher > updateStatus', error.message)
-    res.json({
-      status: 500,
-      message: errorConstants.INTERNAL_SERVER_ERROR
+      res.json({ status: 200, data: item, message: "Successful status update" })
+    }).catch((error) => {
+      console.log('EVoucher > updateStatus', error.message)
+      res.json({
+        status: 500,
+        message: errorConstants.INTERNAL_SERVER_ERROR
+      })
     })
-  })
 }
 
 

@@ -12,7 +12,8 @@ import {
   list as getEVoucherList,
   updateStatus as updateEVoucherStatus,
   create as createEVoucher,
-  update as updateEVoucher
+  update as updateEVoucher,
+  detail as getDetailEVoucher
 } from './app/models/EVoucher.js';
 import errorConstants from './app/constants/errorConstants.js';
 
@@ -66,6 +67,10 @@ try {
 
     app.get("/api/e-vouchers", verifyToken, (req, res) => {
       getEVoucherList(req, res)
+    })
+
+    app.post("/api/e-voucher/detail", verifyToken, (req, res) => {
+      getDetailEVoucher(req, res)
     })
 
     app.post("/api/e-voucher/create", verifyToken, (req, res) => {
