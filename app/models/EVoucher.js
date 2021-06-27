@@ -2,6 +2,7 @@ import moment from "moment";
 import errorConstants from "../constants/errorConstants.js";
 import db from './index.js';
 import { v4 as generateUuid } from 'uuid'
+import voucherCodes from 'voucher-code-generator';
 
 const EVoucher = (sequelize, Sequelize) => {
   return sequelize.define('eVoucher', {
@@ -141,6 +142,58 @@ export const updateStatus = async (req, res) => {
         status: 500,
         message: errorConstants.INTERNAL_SERVER_ERROR
       })
+    })
+}
+
+export const purchaseEVoucher = async (req, res) => {
+  const { id, paymentMethod, cardNumber, cardHolderName, phoneNo } = { ...req.body }
+
+  if (!id || !paymentMethod || !cardNumber || !cardHolderName || !phoneNo)
+    res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+
+  db.eVoucher.findByPk(id)
+    .then((eVoucher) => {
+
+      if (!eVoucher) res.json({ status: 400, message: errorConstants.EVOUCHER_NOT_FOUND })
+
+      else if (eVoucher.qty < 1)
+        res.json({ status: 400, message: errorConstants.LIMIT_REACH_VOUCER })
+
+      else if(!eVoucher.status )
+        res.json({ status: 400, message: errorConstants.LUNACTIVE_EVOUCHER })
+
+      else {
+        db.promoCode.create({
+          receiverName: cardHolderName,
+          eVoucherId: id,
+          phoneNo: phoneNo,
+          id: generateUuid(),
+          code: voucherCodes.generate({ length: 11 })[0],
+        }).then((promo) => {
+          eVoucher.update({ qty: Math.max(eVoucher.qty - 1, 0) })
+  
+          const payment = eVoucher.paymentMethods.filter((payment) => payment.name ===paymentMethod )[0];
+          let discountPrice = eVoucher.price
+          if(!payment) res.json({ status: 400, message: errorConstants.UNSUPPORTED_PAYMENT })
+  
+          if(payment.discountAmount) {
+            discountPrice = payment.discount === 'percent' ?
+            eVoucher.price -  (eVoucher.price * payment.discountAmount) /100 :
+              Math.max(0, eVoucher.price - payment.discountAmount)
+          }
+          
+          res.json({ status: 200, data: {
+            promo,
+            eVoucher,
+            paymentMethod, cardNumber, cardHolderName,
+            normalPrice: eVoucher.price,
+            discountPrice: discountPrice,
+          }, message: "Successful Created Promocode" })
+        })
+
+      }
+    }).catch((error) => {
+      console.log('EVouser > purchase', error.message)
     })
 }
 

@@ -37,14 +37,13 @@ const PromoCode = (sequelize, Sequelize) => {
     },
     createBy: {
       type: Sequelize.STRING,
-      allowNull: false
     },
     createdAt: { type: Sequelize.DATE, defaultValue: new Date() },
     updatedAt: { type: Sequelize.DATE, defaultValue: new Date() },
   })
 }
 
-export const purchase = async (req, res) => {
+export const createByCMS = async (req, res) => {
   const { userId, giftLimit, eVoucherId, receiverName, phoneNo, buyFor = 'self' } = { ...req.body }
   const Op = Sqelz.Op;
   if (
@@ -74,9 +73,9 @@ export const purchase = async (req, res) => {
             buyFor,
             createBy: userId,
             id: generateUuid(),
-            code: voucherCodes.generate({ length: 8 })[0],
+            code: voucherCodes.generate({ length: 11 })[0],
           }).then((promo) => {
-            eVoucher.update({ qty: eVoucher.qty - 1 })
+            eVoucher.update({ qty: Math.max(eVoucher.qty - 1, 0) })
       
             res.json({ status: 200, data: promo, message: "Successful Created Promocode" })
           })

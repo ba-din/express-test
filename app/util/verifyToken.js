@@ -4,18 +4,14 @@ import Sequlize from 'sequelize';
 import keyConstants from '../constants/keyConstants.js';
 import errorConstants from '../constants/errorConstants.js';
 
-const AccessToken = db.accessToken;
-const Op = Sequlize.Op;
-
 const verifyToken = async (req, res, next) => {
   const bearerHeader = req.headers['authorization'];
-  const enableRefresh = req.body['refreshToken'] || false;
 
   if (!bearerHeader) res.json({ status: 403, message: errorConstants.FORBIDDEN });
   const bearer = bearerHeader.split(' ');
   const bearerToken = bearer[1];
 
-  AccessToken.findOne({
+  db.accessToken.findOne({
     where: { token: bearerToken }
   })
     .then((accessToken) => {

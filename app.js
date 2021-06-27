@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import db from './app/models/index.js';
 import bcrypt from 'bcryptjs';
 import verifyToken from './app/util/verifyToken.js';
+import verifyPublicAccessToken from './app/util/verifyPublicToken.js';
 import {
   getAccessToken
 } from './app/models/AccessToken.js';
@@ -14,9 +15,10 @@ import {
   create as createEVoucher,
   update as updateEVoucher,
   detail as getDetailEVoucher,
+  purchaseEVoucher
 } from './app/models/EVoucher.js';
 import {
-  purchase as eVoucherPurchase
+  createByCMS as eVoucherCreateByCMS
 } from './app/models/PromoCode.js';
 import errorConstants from './app/constants/errorConstants.js';
 
@@ -88,9 +90,23 @@ try {
       updateEVoucherStatus(req, res)
     })
 
-    app.post("/api/e-voucher/purchase", verifyToken, (req, res) => {
-      eVoucherPurchase(req, res)
+    app.post("/api/promo-code/create", verifyToken, (req, res) => {
+      eVoucherCreateByCMS(req, res)
     })
+
+    app.post("/api/e-voucher/purchase", verifyPublicAccessToken, (req, res) => {
+      purchaseEVoucher(req, res)
+    })
+
+    app.get("/api/payment-methods", (req, res) => {
+      res.json({
+        status: 200,
+        data: [
+          {name: "Master Card Payment", value: "master_card"},
+          {name: "VISA Card Payment", value: "master_card"}
+        ]
+      })
+    });
   });
 } catch (error) {
   console.error('Unable to connect to the database:', error);
