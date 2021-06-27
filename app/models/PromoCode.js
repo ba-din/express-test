@@ -45,10 +45,10 @@ const PromoCode = (sequelize, Sequelize) => {
 }
 
 export const purchase = async (req, res) => {
-  const { userUuid, giftLimit, eVoucherId, receiverName, phoneNo, buyFor = 'self' } = { ...req.body }
+  const { userId, giftLimit, eVoucherId, receiverName, phoneNo, buyFor = 'self' } = { ...req.body }
   const Op = Sqelz.Op;
   if (
-    !userUuid || !eVoucherId || !receiverName || !phoneNo
+    !userId || !eVoucherId || !receiverName || !phoneNo
     || !['self', 'others'].includes(buyFor) ||
     (buyFor === 'others' && !giftLimit)
   )
@@ -72,7 +72,7 @@ export const purchase = async (req, res) => {
             eVoucherId,
             phoneNo,
             buyFor,
-            createBy: userUuid,
+            createBy: userId,
             id: generateUuid(),
             code: voucherCodes.generate({ length: 8 })[0],
           }).then((promo) => {
@@ -85,7 +85,7 @@ export const purchase = async (req, res) => {
       if (buyFor === 'others') {
         await db.promoCode.findAll({
           [Op.and]: [
-            { createBy: userUuid },
+            { createBy: userId },
             { buyFor: 'others' }
           ]
         }).then(async (promoCodes) => {
