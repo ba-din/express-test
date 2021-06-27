@@ -43,7 +43,8 @@ export const create = async (req, res) => {
     qty, paymentMethods, expiredAt
   } = { ...req.body }
 
-  if (!title || !price || !qty || !expiredAt) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+  if (!title || !price || !qty || !expiredAt)
+    res.json({ status: 400, message: errorConstants.BAD_REQUEST })
 
   await db.eVoucher.create({
     id: generateUuid(),
@@ -122,7 +123,7 @@ export const update = async (req, res) => {
 }
 
 export const updateStatus = async (req, res) => {
-  let { id, status } = { ...req.body }
+  const { id, status } = { ...req.body }
 
   if (!id || typeof status !== 'boolean') res.json({ status: 400, message: errorConstants.BAD_REQUEST })
 
@@ -142,7 +143,5 @@ export const updateStatus = async (req, res) => {
       })
     })
 }
-
-
 
 export default EVoucher;

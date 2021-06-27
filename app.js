@@ -13,8 +13,11 @@ import {
   updateStatus as updateEVoucherStatus,
   create as createEVoucher,
   update as updateEVoucher,
-  detail as getDetailEVoucher
+  detail as getDetailEVoucher,
 } from './app/models/EVoucher.js';
+import {
+  purchase as eVoucherPurchase
+} from './app/models/PromoCode.js';
 import errorConstants from './app/constants/errorConstants.js';
 
 const app = express()
@@ -83,6 +86,10 @@ try {
 
     app.post("/api/e-voucher/updateStatus", verifyToken, (req, res) => {
       updateEVoucherStatus(req, res)
+    })
+
+    app.post("/api/e-voucher/purchase", verifyToken, (req, res) => {
+      eVoucherPurchase(req, res)
     })
   });
 } catch (error) {

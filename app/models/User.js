@@ -13,7 +13,10 @@ const User = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
-    buyLimt: {type: Sequelize.INTEGER, defaultValue: 10},
+    giftLimt: {
+      type: Sequelize.INTEGER,
+      defaultValue: 5
+    },
     createdAt: { type: Sequelize.DATE },
     updatedAt: { type: Sequelize.DATE },
   })
