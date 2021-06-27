@@ -1,5 +1,7 @@
 import Sequelize from 'sequelize';
 import dbConfig from '../db/config.js';
+import AccessToken from './AccessToken.js';
+import User from './User.js';
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -17,5 +19,7 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 const db = {};
 
 db.sequelize = sequelize;
+db.accessToken = AccessToken(sequelize, Sequelize);
+db.user = User(sequelize, Sequelize);
 
 export default db;

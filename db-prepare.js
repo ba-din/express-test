@@ -1,35 +1,31 @@
-import mysql from 'mysql2';
 import dotenv from 'dotenv';
-import dbConfig from './app/db/config.js';
-import fs from 'fs';
-import { exit } from 'process';
+import db from './app/models/index.js';
+import keyConstants from './app/constants/keyConstants.js';
+import moment from 'moment-timezone';
+import bcrypt from 'bcryptjs';
 
-dotenv.config()
+try {
+  db.sequelize.authenticate();
+  console.log('Connection has been established successfully.');
+  db.sequelize.sync({}).then(async () => {
+    const token = {
+      id: 'aae91940-26d7-42d2-a095-fb1862e2a78d',
+      token: 'ee04f896-fc73-4115-afe3-924f3e0e87a0',
+      userId: 'aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      expiredAt: new Date(Date.now() + keyConstants.SESSION_DURATION) // added one day interval
+    }
+    await db.accessToken.create(token).catch((error) => { console.log(error) })
 
-var connection = mysql.createConnection({
-  host     : dbConfig.HOST,
-  user     : dbConfig.USER,
-  password : dbConfig.PASSWORD,
-  database : dbConfig.DB
-});
+    const user = {
+      name: 'badin',
+      password: bcrypt.hashSync('secret', 10),
+      id: 'aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }
 
-connection.connect();
-console.log('DB conntected');
-
-const dataSql = fs.readFileSync('./app/db/tables/token.sql').toString();
-
-const dataArr = dataSql.toString().split(';');
-
-dataArr.forEach((query) => {
-  if(query) {
-    // Add the delimiter back to each query before you run them
-    // In my case the it was `);`
-    query += ';';
-    connection.query(query, function (error, results, fields) {
-      if (error) throw error;
-      console.log('The solution is: ', results);
-    });
-  }
-});
-
-connection.end();
+    await db.user.create(user).catch((error) => { console.log(error) })
+  });
+} catch (error) {
+  console.error('Unable to connect to the database:', error);
+}
