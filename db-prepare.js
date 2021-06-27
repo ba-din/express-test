@@ -28,7 +28,7 @@ try {
     await db.accessToken.create(token).catch((error) => { console.log(error) })
 
     const evouche1 = {
-      id: generateUuid(),
+      id: 'aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       title: 'iTune',
       desc: 'Apple Store',
       image: 'https://upload.wikimedia.org/wikipedia/commons/2/2a/ITunes_12.2_logo.png',

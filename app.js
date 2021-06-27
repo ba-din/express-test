@@ -12,6 +12,7 @@ import {
   list as getEVoucherList,
   updateStatus as updateEVoucherStatus,
   create as createEVoucher,
+  update as updateEVoucher
 } from './app/models/EVoucher.js';
 import errorConstants from './app/constants/errorConstants.js';
 
@@ -63,15 +64,19 @@ try {
     });
 
 
-    app.get("/api/e-vouchers", verifyToken, (req,res) => {
+    app.get("/api/e-vouchers", verifyToken, (req, res) => {
       getEVoucherList(req, res)
     })
 
-    app.post("/api/e-voucher/create", verifyToken, (req,res) => {
+    app.post("/api/e-voucher/create", verifyToken, (req, res) => {
       createEVoucher(req, res)
     })
 
-    app.post("/api/e-voucher/updateStatus", verifyToken, (req,res) => {
+    app.post("/api/e-voucher/update", verifyToken, (req, res) => {
+      updateEVoucher(req, res)
+    })
+
+    app.post("/api/e-voucher/updateStatus", verifyToken, (req, res) => {
       updateEVoucherStatus(req, res)
     })
   });

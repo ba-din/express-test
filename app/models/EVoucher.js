@@ -61,12 +61,44 @@ export const create = async (req, res) => {
       status: 200,
       data: item,
       message: "Successful create new e-Voucher"
-    }).catch((error) => {
-      console.log('EVoucher > create ',error)
-      res.json({
-        status: 500,
-        message: errorConstants.INTERNAL_SERVER_ERROR
-      })
+    })
+  }).catch((error) => {
+    console.log('EVoucher > create ',error)
+    res.json({
+      status: 500,
+      message: errorConstants.INTERNAL_SERVER_ERROR
+    })
+  })
+}
+
+export const update = async (req, res) => {
+  const {
+    id, title, desc, image, price,
+    qty, paymentMethods, expiredAt
+  } = {...req.body}
+
+  if(!id, !title || !price || !qty || !expiredAt  ) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+
+  await db.eVoucher.findByPk(id)
+  .then((item) => {
+    if(!item) res.json({status: 404, message: errorConstants.NOT_FOUND})
+    const data = {
+      title,
+      desc,
+      image,
+      price,
+      qty,
+      paymentMethods,
+      expiredAt,
+      updatedAt: new Date()
+    }
+    item.update(data)
+    res.json({status: 200, data, message: "Successful e-voucher update"})
+  }).catch((error) => {
+    console.log('EVoucher > update', error.message)
+    res.json({
+      status: 500,
+      message: errorConstants.INTERNAL_SERVER_ERROR
     })
   })
 }
@@ -81,8 +113,15 @@ export const updateStatus = async (req, res) => {
     if(!item) res.json({status: 404, message: errorConstants.NOT_FOUND})
 
     item.update({status, updatedAt: new Date()})
+    item.status = status
 
     res.json({status: 200, data: item, message: "Successful status update"})
+  }).catch((error) => {
+    console.log('EVoucher > updateStatus', error.message)
+    res.json({
+      status: 500,
+      message: errorConstants.INTERNAL_SERVER_ERROR
+    })
   })
 }
 
