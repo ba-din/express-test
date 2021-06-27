@@ -51,7 +51,7 @@ try {
             delete user.password;
             res.json({
               status: 200,
-              data: { id: user.id, name: user.name }
+              data: { id: user.id, name: user.name, giftLimit:  user.giftLimit}
             })
           }
           throw new Error
