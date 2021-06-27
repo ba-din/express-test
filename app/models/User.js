@@ -1,5 +1,3 @@
-import errorConstants from "../constants/errorConstants.js"
-
 const User = (sequelize, Sequelize) => {
   return sequelize.define('user', {
     id: {
@@ -15,8 +13,8 @@ const User = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
-    createdAt: { type: Sequelize.DATE, allowNull: false },
-    updatedAt: { type: Sequelize.DATE, allowNull: false },
+    createdAt: { type: Sequelize.DATE },
+    updatedAt: { type: Sequelize.DATE },
   })
 }
 

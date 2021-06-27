@@ -3,11 +3,14 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import db from './app/models/index.js';
 import bcrypt from 'bcryptjs';
-
+import verifyToken from './app/util/verifyToken.js';
 import {
   getAccessToken
 } from './app/models/AccessToken.js';
 import User from './app/models/User.js';
+import {
+  list as getEVoucherList
+} from './app/models/EVoucher.js';
 import errorConstants from './app/constants/errorConstants.js';
 
 const app = express()
@@ -56,6 +59,10 @@ try {
     app.post("/api/getAccessToken", (req, res) => {
       getAccessToken(req, res)
     });
+
+    app.get("/api/e-vouchers", verifyToken, (req,res) => {
+      getEVoucherList(req, res)
+    })
   });
 } catch (error) {
   console.error('Unable to connect to the database:', error);

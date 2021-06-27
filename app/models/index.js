@@ -2,6 +2,7 @@ import Sequelize from 'sequelize';
 import dbConfig from '../db/config.js';
 import AccessToken from './AccessToken.js';
 import User from './User.js';
+import EVoucher from './EVoucher.js';
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -21,5 +22,6 @@ const db = {};
 db.sequelize = sequelize;
 db.accessToken = AccessToken(sequelize, Sequelize);
 db.user = User(sequelize, Sequelize);
+db.eVoucher = EVoucher(sequelize, Sequelize);
 
 export default db;
