@@ -4,4 +4,5 @@ export default {
   INTERNAL_SERVER_ERROR: "INTERNAL_SERVER_ERROR",
   BAD_REQUEST: "Bad Request",
   LOGIN_FAIL: "Login Fail",
+  NOT_FOUND: "Not Found"
 }

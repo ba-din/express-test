@@ -33,11 +33,13 @@ try {
       desc: 'Apple Store',
       image: 'https://upload.wikimedia.org/wikipedia/commons/2/2a/ITunes_12.2_logo.png',
       price: 10.00,
-      paymentMethod: [
+      qty: 100,
+      paymentMethods: [
         {name: 'master_card', discount: 10, discountType: 'percent'},
         {name: 'visa_card', discount: 5, discountType: 'percent'},
       ],
       status: 1,
+      expiredAt: new Date(Date.now() + 365 * keyConstants.SESSION_DURATION) // 1year
     }
     await db.eVoucher.create(evouche1).catch((error) => { console.log(error) })
   });
