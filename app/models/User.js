@@ -13,6 +13,7 @@ const User = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false
     },
+    buyLimt: {type: Sequelize.INTEGER, defaultValue: 10},
     createdAt: { type: Sequelize.DATE },
     updatedAt: { type: Sequelize.DATE },
   })

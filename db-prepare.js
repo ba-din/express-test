@@ -14,6 +14,7 @@ try {
       name: 'badin',
       password: bcrypt.hashSync('secret', 10),
       id: 'aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
+      buyLimit: 10,
       createdAt: new Date(),
       updatedAt: new Date(),
     }
