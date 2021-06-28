@@ -16,3 +16,6 @@
 
 ### Back End Repo
 - https://github.com/ba-din/express-test
+
+### ERD Diagram
+- https://drive.google.com/file/d/1TKIuJkqhhfsaEdFjnwUGrEbmb-HOdd2I/view?usp=sharing
