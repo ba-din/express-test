@@ -1,0 +1,586 @@
+{
+	"info": {
+		"_postman_id": "e65bb747-5b05-462e-903f-7ea5896b8093",
+		"name": "codigo-test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CMS eVouchers",
+			"item": [
+				{
+					"name": "eVoucherList",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_ACCESS_TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api-host}}/e-vouchers",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"e-vouchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateStatus",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_ACCESS_TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\n    \"status\": false\n}"
+						},
+						"url": {
+							"raw": "{{api-host}}/e-voucher/updateStatus",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"e-voucher",
+								"updateStatus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "createEVoucher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_ACCESS_TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"desc\": \"Steam Wallet\",\n    \"expiredAt\": \"2021-08-27\",\n    \"image\": \"https://e7.pngegg.com/pngimages/699/999/png-clipart-brand-logo-steam-gump-s.png\",\n    \"paymentMethods\": [\n        {\"name\": \"master_card\", \"discountAmount\": \"\", \"discount\": \"percent\"},\n        {\"name\": \"visa_card\", \"discountAmount\": \"\",\"discount\": \"percent\"}\n    ],\n    \"price\": 100,\n    \"qty\": 10,\n    \"title\": \"Steam\"\n}"
+						},
+						"url": {
+							"raw": "{{api-host}}/e-voucher/create",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"e-voucher",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateEVoucher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_ACCESS_TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\n    \"title\": \"iTune\",\n    \"desc\": \"Apple Store\",\n    \"image\": \"https://upload.wikimedia.org/wikipedia/commons/2/2a/ITunes_12.2_logo.png\",\n    \"price\": 10.00,\n    \"qty\": 100,\n    \"paymentMethods\": [\n        {\"name\": \"master_card\", \"discount\": 15, \"discountType\": \"percent\"},\n        {\"name\": \"visa_card\", \"discount\": 10, \"discountType\": \"percent\"}\n    ],\n    \"status\": 1,\n    \"expiredAt\": \"2021-08-27\"\n}"
+						},
+						"url": {
+							"raw": "{{api-host}}/e-voucher/update",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"e-voucher",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "detailEVoucher",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_ACCESS_TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\"\n}"
+						},
+						"url": {
+							"raw": "{{api-host}}/e-voucher/detail",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"e-voucher",
+								"detail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create PromoCOde",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{AUTH_ACCESS_TOKEN}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"eVoucherId\": \"aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\n    \"userId\": \"aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\n    \"receiverName\": \"badin\",\n    \"phoneNo\": \"09401527303\",\n    \"buyFor\": \"others\",\n    \"giftLimit\": \"5\"\n}"
+						},
+						"url": {
+							"raw": "{{api-host}}/promo-code/create",
+							"host": [
+								"{{api-host}}"
+							],
+							"path": [
+								"promo-code",
+								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ApiLogin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{PUBLIC_ACEESS_TOKEN}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"badin\",\n    \"password\": \"secret\"\n}"
+				},
+				"url": {
+					"raw": "{{api-host}}/login",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAccessToken",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{PUBLIC_ACEESS_TOKEN}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": \"aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\n    \"enableRefresh\": true\n}"
+				},
+				"url": {
+					"raw": "{{api-host}}/getAccessToken",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"getAccessToken"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List PaymentMethods",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{PUBLIC_ACEESS_TOKEN}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "{{api-host}}/payment-methods",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"payment-methods"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase E-Voucher",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{PUBLIC_ACEESS_TOKEN}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa\",\n    \"paymentMethod\": \"visa_card\",\n    \"cardNumber\": \"5105105105105100\",\n    \"cardHolderName\": \"badin\",\n    \"phoneNo\": \"09401527303\"\n}"
+				},
+				"url": {
+					"raw": "{{api-host}}/e-voucher/purchase",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"e-voucher",
+						"purchase"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Promo Code",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{PUBLIC_ACEESS_TOKEN}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"phoneNo\": \"09401527303\",\n    \"code\": \"N6P3Lzyilg6\"\n}"
+				},
+				"url": {
+					"raw": "{{api-host}}/promo-code/verify",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"promo-code",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Purchase History",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{AUTH_ACCESS_TOKEN}}",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}"
+				},
+				"url": {
+					"raw": "{{api-host}}/e-voucher/purchase-history",
+					"host": [
+						"{{api-host}}"
+					],
+					"path": [
+						"e-voucher",
+						"purchase-history"
+					]
+				},
+				"description": "Auth Access REquired"
+			},
+			"response": []
+		}
+	]
+}
