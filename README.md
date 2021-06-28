@@ -10,3 +10,9 @@
 ### CMS Login
 - username: badin
 - password: secret
+
+### Front End repo
+- https://github.com/ba-din/react-test
+
+### Back End Repo
+- https://github.com/ba-din/express-test
