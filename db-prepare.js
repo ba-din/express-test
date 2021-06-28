@@ -21,7 +21,7 @@ try {
 
     const token = {
       id: 'aae91940-26d7-42d2-a095-fb1862e2a78d',
-      token: 'ee04f896-fc73-4115-afe3-924f3e0e87a0',
+      token: generateUuid(),
       userId: 'aaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',
       expiredAt: new Date(Date.now() + keyConstants.SESSION_DURATION) // added one day interval
     }

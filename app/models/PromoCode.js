@@ -3,6 +3,7 @@ import db from './index.js';
 import voucherCodes from 'voucher-code-generator';
 import { v4 as generateUuid } from 'uuid';
 import Sqelz from 'sequelize';
+import qr from '../util/qr.js'
 
 const PromoCode = (sequelize, Sequelize) => {
   return sequelize.define('promoCode', {
@@ -99,5 +100,63 @@ export const createByCMS = async (req, res) => {
       }
 
     })
+}
+
+export const verify = async (req, res) => {
+  const {phoneNo, code} = {...req.body}
+  if(!phoneNo || !code) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+
+  const Op = Sqelz.Op;
+
+  db.promoCode.findOne({
+    where: [
+      {phoneNo},
+      {code},
+      {usable: true}
+    ]
+  }).then((promoCode) => {
+    if(!promoCode) res.json({ status: 404, message: errorConstants.INVALID_PROMO_CODE })
+
+    promoCode.update({usable: false})
+    res.json({
+      satatus: 200,
+      data: promoCode
+    })
+  })
+
+}
+
+export const puschaseHistory = async (req, res) => {
+  db.promoCode.findAll({
+    where: [
+      {usable: false}
+    ]
+  }).then((usedPromoCodes) => {
+    db.promoCode.findAll({
+      where: [
+        {usable: true}
+      ]
+    }).then((activePromoCodes) => {
+
+      res.json({status: 200, 
+        data: {
+          usedPromoCodes: usedPromoCodes.map((promoCode) => {
+            return {
+              code: promoCode.code, 
+              image: qr.getQrUrl(`${promoCode.code}:${promoCode.phoneNo}`) 
+            }
+          }),
+          activePromoCodes: activePromoCodes.map((promoCode) => {
+            return {
+              code: promoCode.code, 
+              // image: qr.getQrUrl(`${promoCode.code}:${promoCode.phoneNo}`) 
+            }
+          })
+        }
+      })
+    })
+
+
+  })
 }
 export default PromoCode;

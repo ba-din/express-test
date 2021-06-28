@@ -18,7 +18,9 @@ import {
   purchaseEVoucher
 } from './app/models/EVoucher.js';
 import {
-  createByCMS as eVoucherCreateByCMS
+  createByCMS as eVoucherCreateByCMS,
+  verify as verifyPromoCode,
+  puschaseHistory as puschaseHistory
 } from './app/models/PromoCode.js';
 import errorConstants from './app/constants/errorConstants.js';
 
@@ -42,34 +44,7 @@ try {
       res.json({ message: "Welcome to express test application." });
     });
 
-    app.post("/api/login", (req, res) => {
-      const { username, password } = { ...req.body }
-      if (!username || !password) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
-
-      db.user.findOne({ name: username })
-        .then((user) => {
-          const verified = bcrypt.compareSync(password, user.password);
-          if (verified) {
-            delete user.password;
-            res.json({
-              status: 200,
-              data: { id: user.id, name: user.name, giftLimit:  user.giftLimit}
-            })
-          }
-          throw new Error
-        }).catch((error) => {
-          res.json({
-            status: 403,
-            message: errorConstants.LOGIN_FAIL
-          })
-        })
-    });
-
-    app.post("/api/getAccessToken", (req, res) => {
-      getAccessToken(req, res)
-    });
-
-
+    // auth Routes {"username": "badin", "password": "secret"}
     app.get("/api/e-vouchers", verifyToken, (req, res) => {
       getEVoucherList(req, res)
     })
@@ -94,11 +69,24 @@ try {
       eVoucherCreateByCMS(req, res)
     })
 
+    app.post("/api/e-voucher/purchase-history", verifyToken, (req, res) => {
+      puschaseHistory(req, res)
+    })
+
+    // public Routes
+    app.post("/api/getAccessToken", verifyPublicAccessToken, (req, res) => {
+      getAccessToken(req, res)
+    });
+
+    app.post("/api/promo-code/verify", verifyPublicAccessToken, (req, res) => {
+      verifyPromoCode(req, res)
+    })
+
     app.post("/api/e-voucher/purchase", verifyPublicAccessToken, (req, res) => {
       purchaseEVoucher(req, res)
     })
 
-    app.get("/api/payment-methods", (req, res) => {
+    app.get("/api/payment-methods", verifyPublicAccessToken, (req, res) => {
       res.json({
         status: 200,
         data: [
@@ -106,6 +94,29 @@ try {
           {name: "VISA Card Payment", value: "master_card"}
         ]
       })
+    });
+
+    app.post("/api/login", verifyPublicAccessToken, (req, res) => {
+      const { username, password } = { ...req.body }
+      if (!username || !password) res.json({ status: 400, message: errorConstants.BAD_REQUEST })
+
+      db.user.findOne({ name: username })
+        .then((user) => {
+          const verified = bcrypt.compareSync(password, user.password);
+          if (verified) {
+            delete user.password;
+            res.json({
+              status: 200,
+              data: { id: user.id, name: user.name, giftLimit:  user.giftLimit}
+            })
+          }
+          throw new Error
+        }).catch((error) => {
+          res.json({
+            status: 403,
+            message: errorConstants.LOGIN_FAIL
+          })
+        })
     });
   });
 } catch (error) {

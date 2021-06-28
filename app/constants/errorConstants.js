@@ -12,4 +12,5 @@ export default {
   LIMIT_REACH_GIFT: "Reached gift limit you can send",
   UNSUPPORTED_PAYMENT: "Unsupporeted payment for this e-voucher",
   LUNACTIVE_EVOUCHER: "Unactive e-voucher",
+  INVALID_PROMO_CODE: "Invalid Promo Code"
 }
